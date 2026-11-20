@@ -16,10 +16,10 @@ export function Logo({ h = 36, chip = false, className = '' }) {
 }
 
 // ---- preço estilo varejo ----
-export function PrecoVarejo({ valor, className = '', cor, style }) {
+export function PrecoVarejo({ valor, className = '', cor }) {
   const { reais, centavos } = partesPreco(valor)
   return (
-    <span className={`preco-varejo ${className}`} style={cor || style ? { ...style, ...(cor ? { color: cor } : null) } : undefined}>
+    <span className={`preco-varejo ${className}`} style={cor ? { color: cor } : undefined}>
       <span className="moeda">R$ </span>
       {reais}
       <span className="centavos">,{centavos}</span>

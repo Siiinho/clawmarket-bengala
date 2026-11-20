@@ -9,6 +9,3 @@ dev-dist
 *.log
 __pycache__/
 *.pyc
-
-# encarte publicado e fotos (gerados no PC da loja)
-dados/

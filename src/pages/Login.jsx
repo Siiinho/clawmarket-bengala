@@ -1,8 +1,7 @@
-import MarcaClawMarket from '../components/MarcaClawMarket'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../store/StoreContext'
-import { Icon, Botao } from '../components/ui'
+import { Icon, Botao, Logo } from '../components/ui'
 
 const DESTAQUES = [
   { icone: 'TrendingDown', titulo: '38% menos perdas', desc: 'no primeiro mês de uso' },
@@ -48,7 +47,11 @@ export default function Login() {
           style={{ background: 'linear-gradient(135deg, #7a241b 0%, #b23320 60%, #e23a2e 100%)' }}
         />
         <div className="relative z-10 flex items-center gap-3">
-          <MarcaClawMarket tamanho={52} subtitulo="Encartes digitais para supermercados" />
+          <Logo h={52} chip />
+          <div>
+            <div className="text-xl font-bold">ClawMarket</div>
+            <div className="text-xs tracking-wide text-coral">por Bengala Supermercado</div>
+          </div>
         </div>
 
         <div className="relative z-10 my-10">
@@ -72,7 +75,7 @@ export default function Login() {
             ))}
           </div>
         </div>
-        <div className="relative z-10 text-xs text-cream/50">© 2026 ClawMarket · cliente piloto: Bengala Supermercado</div>
+        <div className="relative z-10 text-xs text-cream/50">© Bengala Supermercado · piloto ClawMarket</div>
       </div>
 
       {/* lado direito */}
