@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useStore } from '../store/StoreContext'
 import { Icon, Botao, Campo, inputCls } from '../components/ui'
-
 export default function Config() {
   const { config, salvarConfig, resetar, toast } = useStore()
   const [f, setF] = useState({ ...config })

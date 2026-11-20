@@ -40,7 +40,7 @@ async function aguardarRecursos(el) {
   await proximoFrame()
 }
 
-async function captura(el) {
+async function captura(el, { escala } = {}) {
   if (!el || !el.isConnected) {
     throw new Error('A página do jornal ainda não está pronta. Aguarde a prévia aparecer e tente novamente.')
   }
@@ -58,13 +58,14 @@ async function captura(el) {
   const largura = Math.max(1, Math.round(retangulo.width || el.offsetWidth))
   const altura = Math.max(1, Math.round(retangulo.height || el.offsetHeight))
   const escalaSegura = Math.sqrt(LIMITE_PIXELS_CANVAS / Math.max(largura * altura, 1))
-  const escalas = [...new Set([
+  const escalas = escala ? [escala, Math.min(escala, 2), 1].filter((v, i, l) => l.indexOf(v) === i) : [...new Set([
     Math.min(ESCALA_IMPRESSAO, escalaSegura),
     Math.min(4, escalaSegura),
     Math.min(3, escalaSegura),
     Math.min(2, escalaSegura),
   ])]
     .filter((scale) => Number.isFinite(scale) && scale >= 1)
+  // `escala` fixa: artes de rede social saem no tamanho exato do formato (1080 px etc.).
 
   // A segunda tentativa, mais leve, permite exportar também em coletores e
   // celulares com pouca memória sem reduzir a qualidade nos aparelhos comuns.
@@ -148,10 +149,20 @@ function oferecerArquivo(blob, nome) {
   return { blob, url, nome }
 }
 
-export async function exportarPNG(el, nome = 'cartaz') {
-  const canvas = await captura(el)
-  const blob = await canvasParaBlob(canvas, 'image/png')
+export async function exportarPNG(el, nome = 'cartaz', opcoes) {
+  const blob = await gerarPNG(el, opcoes)
   return oferecerArquivo(blob, `${nome}.png`)
+}
+
+// Gera o PNG sem baixar (para compartilhar pelo celular no WhatsApp/Instagram).
+export async function gerarPNG(el, opcoes) {
+  const canvas = await captura(el, opcoes)
+  try {
+    return await canvasParaBlob(canvas, 'image/png')
+  } finally {
+    canvas.width = 1
+    canvas.height = 1
+  }
 }
 
 export async function exportarPDF(el, nome = 'jornal') {

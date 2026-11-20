@@ -158,3 +158,21 @@ export function arquivoParaDataURL(file, max = 480) {
     reader.readAsDataURL(file)
   })
 }
+
+// ---- selos de oferta (aparecem no encarte impresso e no digital) ----
+// A validade do produto NUNCA vai para o encarte: o selo é o que o cliente vê.
+export const SELOS_OFERTA = [
+  { id: 'oferta', texto: 'Oferta', fundo: '#e4232e', cor: '#ffffff' },
+  { id: 'imperdivel', texto: 'Imperdível', fundo: '#ffc928', cor: '#082b4f' },
+  { id: 'queima', texto: 'Queima de estoque', fundo: '#082b4f', cor: '#ffc928' },
+  { id: 'super', texto: 'Super oferta', fundo: '#bf1721', cor: '#ffc928' },
+  { id: 'precobaixo', texto: 'Preço baixo', fundo: '#1c6e48', cor: '#ffffff' },
+  { id: 'leve-mais', texto: 'Leve mais, pague menos', fundo: '#d9641f', cor: '#ffffff' },
+  { id: 'so-hoje', texto: 'Só hoje', fundo: '#7c2230', cor: '#ffffff' },
+  { id: 'exclusivo', texto: 'Exclusivo da loja', fundo: '#2c84b0', cor: '#ffffff' },
+]
+
+export const seloOfertaById = (id) => SELOS_OFERTA.find((s) => s.id === id) || null
+
+// Selo do produto: o escolhido pelo operador ou, sem escolha, "Oferta".
+export const seloDoProduto = (produto) => seloOfertaById(produto?.seloOferta) || SELOS_OFERTA[0]

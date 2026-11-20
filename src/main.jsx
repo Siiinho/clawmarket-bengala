@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom'
 import App from './App.jsx'
 import { StoreProvider } from './store/StoreContext.jsx'
 import { registerSW } from 'virtual:pwa-register'
+import '@fontsource/bangers'
 import './index.css'
 
 // registra o service worker (offline + atualização automática)

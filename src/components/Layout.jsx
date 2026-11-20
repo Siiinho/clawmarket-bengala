@@ -1,7 +1,8 @@
+import MarcaClawMarket, { SimboloClawMarket } from './MarcaClawMarket'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useStore, NAV, podeVer } from '../store/StoreContext'
-import { Icon, Logo } from './ui'
+import { Icon } from './ui'
 import { InstallButton, OfflineBadge } from './Pwa'
 
 const SUBTITULOS = {
@@ -30,13 +31,9 @@ function Marca({ colapsado }) {
   return (
     <div className="relative flex items-center gap-2.5 overflow-hidden border-b border-white/10 px-3 py-4">
       <span className="pointer-events-none absolute -right-5 -top-7 h-20 w-20 rounded-full border-[14px] border-offer/15" />
-      <Logo h={colapsado ? 36 : 40} chip />
-      {!colapsado && (
-        <div className="relative leading-none">
-          <div className="display-bengala text-[16px] text-white">Cloud Market</div>
-          <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-offer">Supermercado Bengala</div>
-        </div>
-      )}
+      {colapsado
+        ? <SimboloClawMarket tamanho={36} />
+        : <MarcaClawMarket tamanho={38} subtitulo="Supermercado Bengala" className="relative" />}
     </div>
   )
 }

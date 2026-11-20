@@ -3,6 +3,8 @@
 // Simula o efeito de "puxar do PDV": digita/escaneia o código e o produto vem preenchido.
 import imagensAprovadas from '../data/imagensProdutosAprovadas.json'
 
+import { buscarNaEanImages } from './eanImages'
+
 const CATALOGOS_PUBLICOS = [
   { id: 'open-food-facts', dominio: 'world.openfoodfacts.org', nome: 'Open Food Facts' },
   { id: 'open-beauty-facts', dominio: 'world.openbeautyfacts.org', nome: 'Open Beauty Facts' },
@@ -538,6 +540,49 @@ async function prepararImagemLocal(codigo, dados, local, aprovada = null) {
 export async function buscarProdutoAutomatizado(codigo, produtoBase = null) {
   const c = String(codigo || '').replace(/\D/g, '').trim()
   if (!c || typeof fetch !== 'function' || globalThis.location?.protocol === 'file:') return null
+
+  // 1º: EAN Images (imagem oficial pelo código exato), quando há chave configurada.
+  const ean = await buscarNaEanImages(c)
+  if (ean?.encontrado && ean.imagem) {
+    const imagem = await imagemParaDataURL(ean.imagem, { fundoBranco: true })
+    if (String(imagem).startsWith('data:')) {
+      const registro = {
+        codigoBarras: c,
+        imagem,
+        marca: produtoBase?.marca || '',
+        setor: produtoBase?.setor || '',
+        origem: 'eanimages',
+        origemNome: 'EAN Images',
+        imagemOriginal: `eanimages:${c}`,
+        imagemFonteUrl: null,
+        imagemPaginaUrl: null,
+        imagemLargura: null,
+        imagemAltura: null,
+        imagemAprovada: true,
+        correspondencia: 'codigo-exato',
+        imagemAltaResolucao: true,
+        imagemIlustrativa: false,
+        tratamento: TRATAMENTO_PACKSHOT,
+        salvoEm: new Date().toISOString(),
+        verificadoEm: new Date().toISOString(),
+      }
+      await gravarImagemSalva(registro)
+      const nomeBase = produtoBase?.nome && !/^Produto \d+$/.test(produtoBase.nome) ? produtoBase.nome : null
+      return {
+        encontrado: true,
+        produto: {
+          ...(produtoBase || {}),
+          codigoBarras: c,
+          nome: nomeBase || ean.nome || produtoBase?.nome || `Produto ${c}`,
+          descricao: ean.descricao || produtoBase?.descricao || '',
+          ...((produtoBase?.setor || ean.nome) ? { setor: produtoBase?.setor || inferirSetor(ean.nome) } : {}),
+        },
+        foto: respostaImagemSalva(registro),
+        fonteMercadologia: produtoBase?.setor ? null : 'eanimages',
+        eanImages: { creditosCobrados: ean.creditosCobrados, saldo: ean.saldo, teste: ean.teste },
+      }
+    }
+  }
 
   try {
     const resposta = await fetch(`/api/produto?codigo=${encodeURIComponent(c)}`, {

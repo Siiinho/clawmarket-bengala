@@ -16,6 +16,7 @@ const Sustentabilidade = lazy(() => import('./pages/Sustentabilidade'))
 const Scanner = lazy(() => import('./pages/Scanner'))
 const Usuarios = lazy(() => import('./pages/Usuarios'))
 const Config = lazy(() => import('./pages/Config'))
+const EncarteDigital = lazy(() => import('./pages/EncarteDigital'))
 
 function Carregando() {
   return (
@@ -39,6 +40,8 @@ export default function App() {
     <>
       <Suspense fallback={<Carregando />}>
         <Routes>
+          {/* público: o link da tag NFC abre aqui, sem login */}
+          <Route path="/encarte" element={<EncarteDigital />} />
           <Route path="/login" element={usuario ? <Navigate to="/" replace /> : <Login />} />
           <Route element={<Protegida><Layout /></Protegida>}>
             <Route index element={<Dashboard />} />
