@@ -60,7 +60,7 @@ export default function Produtos() {
       salvarProduto({ ...p, loja: lojaPadrao })
       if (i % 10 === 0) setImportacao((s) => ({ ...s, progresso: i + 1 }))
     }
-    toast(`${prods.length} produto(s) importado(s) do catálogo!`)
+    toast(`${prods.length === 1 ? '1 produto importado' : `${prods.length} produtos importados`} do catálogo!`)
     setImportacao(null)
   }
 
@@ -215,18 +215,18 @@ export default function Produtos() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <select value={fSetor} onChange={(e) => setFSetor(e.target.value)} className={`${inputCls} w-auto`}>
+        <select value={fSetor} onChange={(e) => setFSetor(e.target.value)} className={`${inputCls.replace('w-full ', '')} w-full sm:w-auto`}>
           <option value="">Todos os setores</option>
           {SETORES.map((s) => <option key={s.id} value={s.id}>{s.nome}</option>)}
         </select>
-        <select value={fStatus} onChange={(e) => setFStatus(e.target.value)} className={`${inputCls} w-auto`}>
+        <select value={fStatus} onChange={(e) => setFStatus(e.target.value)} className={`${inputCls.replace('w-full ', '')} w-full sm:w-auto`}>
           <option value="">Todos os status</option>
           <option value="critico">Crítico (até 2 dias)</option>
           <option value="atencao">Atenção (até 7 dias)</option>
           <option value="normal">Normal</option>
           <option value="vencido">Vencido</option>
         </select>
-        <span className="text-sm text-ink-soft">{lista.length} resultado(s)</span>
+        <span className="num-tab text-sm text-ink-soft">{lista.length === 1 ? '1 resultado' : `${lista.length} resultados`}</span>
         {editavel && (
           <div className="ml-auto flex gap-2">
             <Botao variante="contorno" onClick={abrirImport}><Icon name="Upload" size={16} /> Importar planilha</Botao>
@@ -505,7 +505,7 @@ export default function Produtos() {
             {importacao.res?.erro && <p className="text-sm text-critical">{importacao.res.erro}</p>}
             {importacao.res?.produtos?.length > 0 && (
               <div className="rounded-lg border border-success/25 bg-success/5 p-3">
-                <p className="text-sm font-medium text-success">{importacao.res.produtos.length} produto(s) detectado(s)</p>
+                <p className="text-sm font-medium text-success">{importacao.res.produtos.length === 1 ? '1 produto detectado' : `${importacao.res.produtos.length} produtos detectados`}</p>
                 <ul className="mt-1 max-h-28 overflow-y-auto text-xs text-ink-soft">
                   {importacao.res.produtos.slice(0, 8).map((p, i) => (
                     <li key={i} className="truncate">• {p.nome} — {setorById(p.setor).nome} — {formatBRL(p.precoNormal)}</li>

@@ -1,10 +1,46 @@
 @import "tailwindcss";
 
+/* ===== Fontes próprias (self-hosted, funcionam offline no PWA) =====
+   Archivo: grotesca de varejo, firme e legível no chão de loja.
+   Archivo Narrow: voz de cartaz/encarte para títulos e preços. */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("./assets/fonts/archivo-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("./assets/fonts/archivo-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Archivo Narrow";
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url("./assets/fonts/archivo-narrow-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo Narrow";
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url("./assets/fonts/archivo-narrow-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 /* ===== Design System de marca configurável ===== */
 @theme {
-  --color-cream: #fff8ed;
-  --color-cream-200: #f7ecd8;
-  --color-bengala: #e4232e;
+  --color-cream: #f3f5f8;
+  --color-cream-200: #e8edf3;
+  --color-bengala: #d81e29;
   --color-bengala-dark: #bf1721;
   --color-coral: #f47b36;
   --color-coral-dark: #d9641f;
@@ -17,8 +53,8 @@
   --color-success: #2e9e6b;
   --color-warning: #f2a93b;
   --color-critical: #c42b2b;
-  --color-ink: #2a1a16;
-  --color-ink-soft: #6b5a54;
+  --color-ink: #172331;
+  --color-ink-soft: #566274;
 
   /* faixas dos 9 setores (jornal) */
   --color-setor-padaria: #c77e1a;
@@ -31,40 +67,41 @@
   --color-setor-congelados: #2c84b0;
   --color-setor-petshop: #8a4fa0;
 
-  --font-sans: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  --font-sans: "Archivo", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo Narrow", "Archivo", "Segoe UI", sans-serif;
   --radius-bengala: 0.9rem;
+
+  /* curvas de movimento: saída forte para feedback imediato */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @layer base {
   html { font-family: var(--font-sans); }
   body {
-    background:
-      radial-gradient(circle at 10% 0%, rgba(255, 201, 40, 0.11), transparent 24rem),
-      var(--color-cream);
+    background: var(--color-cream);
     color: var(--color-ink);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
   }
-  h1, h2, h3 { letter-spacing: -0.025em; }
+  h1, h2, h3 { letter-spacing: -0.015em; text-wrap: balance; }
 
-  /* transições suaves padrão em elementos interativos (150ms) */
+  /* superfícies do navegador também levam a marca */
+  ::selection { background: color-mix(in srgb, var(--color-offer) 70%, transparent); color: var(--color-navy); }
+  input, textarea { caret-color: var(--color-bengala); }
+  ::placeholder { color: #697384; opacity: 1; }
+
+  /* transições só de cor/sombra (hover), propriedades explícitas */
   button, a, select, [role="button"] {
     transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+      border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s var(--ease-out);
   }
-  /* feedback de toque em qualquer botão (inclui ícones/abas) */
-  button:not(:disabled):active { transform: scale(0.94); }
+  /* feedback de toque: o botão "afunda" um pouco ao pressionar */
+  button:not(:disabled):active { transform: scale(0.97); }
 
-  /* ícones (lucide) com "pop" springy ao passar o mouse em botões/links */
-  .lucide { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  button:not(:disabled):hover .lucide,
-  a:hover .lucide,
-  [role="button"]:hover .lucide { transform: scale(1.15); }
-  /* ícone dentro de botão pressionado não estoura */
-  button:not(:disabled):active .lucide { transform: scale(1.05); }
   /* foco visível consistente para teclado */
   button:focus-visible, a:focus-visible, [role="button"]:focus-visible {
     outline: none;
@@ -72,8 +109,8 @@
   }
 
   ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-thumb { background: #d9cdb9; border-radius: 999px; }
-  ::-webkit-scrollbar-thumb:hover { background: #cbbda3; }
+  ::-webkit-scrollbar-thumb { background: #c5ceda; border-radius: 999px; border: 2px solid var(--color-cream); }
+  ::-webkit-scrollbar-thumb:hover { background: #aab6c6; }
   ::-webkit-scrollbar-track { background: transparent; }
 }
 
@@ -81,27 +118,20 @@
   .card-bengala {
     background: #fff;
     border-radius: var(--radius-bengala);
-    border: 1px solid rgba(8, 43, 79, 0.07);
-    box-shadow: 0 1px 2px rgba(8, 43, 79, 0.05), 0 10px 28px rgba(8, 43, 79, 0.06);
+    border: 1px solid rgba(8, 43, 79, 0.08);
+    box-shadow: 0 1px 2px rgba(8, 43, 79, 0.05), 0 6px 18px rgba(8, 43, 79, 0.05);
   }
-  /* card clicável: elevação + brilho vermelho no hover */
-  .card-int {
-    transition: box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  /* card clicável: só a sombra e a borda respondem ao hover (sem "pular") */
+  .card-int { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .card-int:hover {
+      border-color: rgba(8, 43, 79, 0.16);
+      box-shadow: 0 1px 2px rgba(8, 43, 79, 0.06), 0 10px 26px rgba(8, 43, 79, 0.09);
+    }
   }
-  .card-int:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-bengala) 12%, transparent), 0 16px 34px color-mix(in srgb, var(--color-navy) 13%, transparent);
-  }
-  /* chip de ícone que "brinca" no hover do card */
-  .chip { transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .card-int:hover .chip { transform: scale(1.1) rotate(-4deg); }
 
-  /* acento vermelho antes de títulos de seção */
-  .accent { position: relative; padding-left: 13px; }
-  .accent::before {
-    content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 4px;
-    border-radius: 999px; background: linear-gradient(180deg, var(--color-bengala), var(--color-offer));
-  }
+  /* títulos de seção: o peso da fonte carrega a hierarquia (sem barra lateral) */
+  .accent { position: relative; }
 
   /* expressão promocional controlada pela identidade do estabelecimento */
   .promo-surface {
@@ -133,15 +163,15 @@
     background: var(--color-offer);
     color: var(--color-navy);
     padding: 0.28rem 0.65rem;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
   .display-bengala {
     font-family: var(--font-display);
-    font-weight: 900;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
   .offer-tag {
     display: inline-flex;
@@ -153,40 +183,39 @@
     box-shadow: 3px 3px 0 color-mix(in srgb, var(--color-bengala) 88%, transparent);
   }
   /* preço estilo varejo: R$ pequeno + reais grande + centavos sobrescrito */
-  .preco-varejo { line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .preco-varejo { font-family: var(--font-display); line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
   .preco-varejo .moeda { font-size: 0.45em; vertical-align: 0.15em; }
   .preco-varejo .centavos { font-size: 0.5em; vertical-align: super; }
   /* números de dados (cards de estatística, tabelas) sem "pulo" de largura */
   .num-tab { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 }
 
-/* animação simples de toast */
+/* toast: entra de baixo, curva de saída forte */
 @keyframes toast-in {
-  from { transform: translateY(12px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(8px) scale(0.98); opacity: 0; }
+  to { transform: none; opacity: 1; }
 }
-.toast-in { animation: toast-in 0.18s ease-out; }
+.toast-in { animation: toast-in 0.22s var(--ease-out); }
 
-/* entradas com movimento */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(12px); }
+/* modal: fundo esmaece e o painel cresce de 96% (nada surge do zero) */
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
   to { opacity: 1; transform: none; }
 }
-.anim-in { animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-.pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
-/* aparição escalonada dos filhos diretos (cards de uma grade/lista) */
-.stagger > * { animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.stagger > *:nth-child(1) { animation-delay: 0.03s; }
-.stagger > *:nth-child(2) { animation-delay: 0.07s; }
-.stagger > *:nth-child(3) { animation-delay: 0.11s; }
-.stagger > *:nth-child(4) { animation-delay: 0.15s; }
-.stagger > *:nth-child(5) { animation-delay: 0.19s; }
-.stagger > *:nth-child(6) { animation-delay: 0.23s; }
-.stagger > *:nth-child(7) { animation-delay: 0.27s; }
-.stagger > *:nth-child(8) { animation-delay: 0.31s; }
-.stagger > *:nth-child(9) { animation-delay: 0.35s; }
-.stagger > *:nth-child(n + 10) { animation-delay: 0.38s; }
+.overlay-in { animation: overlay-in 0.18s ease-out both; }
+.modal-in { animation: modal-in 0.22s var(--ease-out) both; }
+
+/* resposta a uma ação (resultado do scanner, alerta): aparece rápido */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.anim-in { animation: fade-up 0.2s var(--ease-out) both; }
+
+/* listas e páginas carregam direto na tarefa: sem coreografia na abertura */
+.stagger > * { animation: none; }
+.pulse-soft { animation: none; }
 
 /* respeita quem prefere menos movimento */
 @media (prefers-reduced-motion: reduce) {

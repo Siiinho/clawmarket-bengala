@@ -33,8 +33,8 @@ function Marca({ colapsado }) {
       <Logo h={colapsado ? 36 : 40} chip />
       {!colapsado && (
         <div className="relative leading-none">
-          <div className="display-bengala text-[16px] text-white">Cloud Market</div>
-          <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.12em] text-offer">Supermercado Bengala</div>
+          <div className="display-bengala text-[19px] text-white">ClawMarket</div>
+          <div className="mt-1 text-[11px] font-semibold text-offer">Supermercado Bengala</div>
         </div>
       )}
     </div>
@@ -82,7 +82,6 @@ export default function Layout() {
     >
       {({ isActive }) => (
         <>
-          {isActive && <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-offer" />}
           <Icon name={n.icone} size={18} className="shrink-0" />
           {(mobile || !colapsado) && <span className="truncate">{n.label}</span>}
         </>
@@ -97,7 +96,7 @@ export default function Layout() {
     >
       <Marca colapsado={!mobile && colapsado} />
       <nav className="flex-1 overflow-y-auto px-2 py-3">
-        {(mobile || !colapsado) && <p className="mb-1 px-3 text-[9px] font-bold uppercase tracking-[.14em] text-white/35">Principal</p>}
+        {(mobile || !colapsado) && <p className="mb-1.5 px-3 text-[11px] font-semibold text-white/50">Principal</p>}
         <div className="space-y-1">
           {itensPrincipais.map((n) => <ItemMenu key={n.key} n={n} mobile={mobile} />)}
         </div>
@@ -189,7 +188,7 @@ export default function Layout() {
             <Icon name="PanelLeft" size={20} />
           </button>
           <div className="min-w-0 flex-1">
-            <h1 className="display-bengala truncate text-xl leading-tight text-navy">{atual.label}</h1>
+            <h1 className="display-bengala truncate text-[22px] leading-tight text-navy">{atual.label}</h1>
             <p className="truncate text-xs text-ink-soft">{SUBTITULOS[atual.key]}</p>
           </div>
           <span className="hidden max-w-40 truncate rounded-full bg-offer px-2.5 py-1 text-xs font-black text-navy sm:inline-flex lg:hidden">

@@ -48,7 +48,7 @@ export default function Precificacao() {
       criarOferta(p.id, `Regra de validade · −${regra.desconto}%`, regra.desconto, p.validade)
       n++
     })
-    toast(n ? `${n} oferta(s) aplicada(s) pelas regras!` : 'Nenhuma nova oferta a aplicar.', n ? 'sucesso' : 'info')
+    toast(n ? `${n === 1 ? '1 oferta aplicada' : `${n} ofertas aplicadas`} pelas regras!` : 'Nenhuma nova oferta a aplicar.', n ? 'sucesso' : 'info')
   }
 
   return (

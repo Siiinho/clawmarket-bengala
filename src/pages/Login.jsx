@@ -41,52 +41,54 @@ export default function Login() {
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       {/* lado esquerdo */}
-      <div className="relative flex flex-col justify-between bg-brick p-8 text-cream md:w-1/2 md:p-12">
+      <div className="relative flex flex-col justify-between overflow-hidden bg-brick p-8 text-cream md:w-1/2 md:p-12">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1.5 bg-bengala" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full border-[44px] border-offer/12" />
         <div
           className="pointer-events-none absolute inset-0 opacity-90"
-          style={{ background: 'linear-gradient(135deg, #7a241b 0%, #b23320 60%, #e23a2e 100%)' }}
+          style={{ background: 'linear-gradient(165deg, #082b4f 0%, #0b345e 62%, #123f6b 100%)' }}
         />
         <div className="relative z-10 flex items-center gap-3">
           <Logo h={52} chip />
           <div>
-            <div className="text-xl font-bold">ClawMarket</div>
-            <div className="text-xs tracking-wide text-coral">por Bengala Supermercado</div>
+            <div className="display-bengala text-2xl leading-none">ClawMarket</div>
+            <div className="mt-1 text-xs font-semibold text-offer">por Bengala Supermercado</div>
           </div>
         </div>
 
-        <div className="relative z-10 my-10">
-          <h1 className="max-w-md text-3xl font-bold leading-tight md:text-4xl">
+        <div className="relative z-10 my-6 md:my-10">
+          <h1 className="display-bengala max-w-md text-[2rem] leading-[1.02] md:text-[3.2rem]">
             Chega de perder dinheiro com vencimentos
           </h1>
-          <p className="mt-3 max-w-md text-cream/80">
+          <p className="mt-4 max-w-md text-[1.05rem] leading-relaxed text-cream/85">
             Controle a validade, gere ofertas e monte o jornal de ofertas internas em minutos.
           </p>
-          <div className="mt-8 space-y-4">
+          <div className="mt-8 hidden space-y-4 md:block">
             {DESTAQUES.map((d) => (
               <div key={d.titulo} className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cream/15 text-coral">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-offer">
                   <Icon name={d.icone} size={20} />
                 </div>
                 <div>
-                  <div className="font-medium">{d.titulo}</div>
+                  <div className="font-semibold">{d.titulo}</div>
                   <div className="text-sm text-cream/70">{d.desc}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="relative z-10 text-xs text-cream/50">© Bengala Supermercado · piloto ClawMarket</div>
+        <div className="relative z-10 hidden text-xs text-cream/60 md:block">© Bengala Supermercado · piloto ClawMarket</div>
       </div>
 
       {/* lado direito */}
-      <div className="flex flex-1 items-center justify-center bg-cream p-6 md:p-12">
+      <div className="flex flex-1 items-start justify-center bg-cream p-6 md:items-center md:p-12">
         <div className="w-full max-w-sm">
           <div className="mb-5 flex gap-1 rounded-lg bg-cream-200 p-1">
             {[['entrar', 'Entrar'], ['criar', 'Criar conta']].map(([id, l]) => (
               <button
                 key={id}
                 onClick={() => { setModo(id); setErro('') }}
-                className={`flex-1 rounded-md py-1.5 text-sm font-medium transition ${modo === id ? 'bg-white text-ink shadow-sm' : 'text-ink-soft'}`}
+                className={`min-h-10 flex-1 rounded-md py-2 text-sm font-semibold ${modo === id ? 'bg-white text-ink shadow-sm' : 'text-ink-soft hover:text-ink'}`}
               >
                 {l}
               </button>

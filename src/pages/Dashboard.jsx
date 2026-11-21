@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../store/StoreContext'
 import { Icon, StatusBadge, ProdutoThumb, EmptyState } from '../components/ui'
-import { setorById, diasParaVencer } from '../lib/utils'
+import { setorById, diasParaVencer, plural } from '../lib/utils'
 
 export default function Dashboard() {
   const { produtos, ofertas, fila } = useStore()
@@ -30,21 +30,18 @@ export default function Dashboard() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-4">
-      <section className="card-bengala anim-in p-5 md:p-6">
-        <div className="mb-4">
-          <p className="text-xs font-bold uppercase tracking-[.12em] text-bengala">Comece por aqui</p>
-          <h2 className="mt-1 text-xl font-bold text-navy">O que você precisa fazer agora?</h2>
-        </div>
+      <section className="card-bengala p-5 md:p-6">
+        <h2 className="mb-4 text-xl font-bold text-navy">O que você precisa fazer agora?</h2>
         <div className="grid gap-2 md:grid-cols-3">
           {[
             ['1', 'Escanear produto', 'Leia o código de barras', 'ScanLine', '/scanner'],
-            ['2', 'Conferir vencimentos', `${stats.vencendo7} produto(s) pedem atenção`, 'CalendarClock', '/produtos'],
-            ['3', 'Gerar jornal', `${fila.length} produto(s) na fila`, 'Newspaper', '/jornal'],
+            ['2', 'Conferir vencimentos', stats.vencendo7 === 0 ? 'Nada vencendo esta semana' : `${plural(stats.vencendo7, 'produto pede', 'produtos pedem')} atenção`, 'CalendarClock', '/produtos'],
+            ['3', 'Gerar jornal', fila.length === 0 ? 'Fila vazia' : `${plural(fila.length, 'produto', 'produtos')} na fila`, 'Newspaper', '/jornal'],
           ].map(([numero, titulo, descricao, icone, rota], indice) => (
             <button
               key={numero}
               onClick={() => navigate(rota)}
-              className={`flex items-center gap-3 rounded-xl border p-3 text-left ${
+              className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${
                 indice === 0
                   ? 'border-bengala bg-bengala text-white hover:bg-bengala-dark'
                   : 'border-navy/10 bg-white hover:border-bengala/35 hover:bg-cream'
@@ -67,7 +64,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-3 rounded-xl border border-warning/40 bg-warning/15 px-4 py-3">
           <Icon name="AlertTriangle" size={20} className="pulse-soft text-warning shrink-0" />
           <p className="min-w-0 flex-1 text-sm text-ink">
-            <span className="font-semibold">{criticos3} produto(s)</span> vencendo em até 3 dias.
+            <span className="font-semibold">{plural(criticos3, 'produto', 'produtos')}</span> vencendo em até 3 dias.
           </p>
           <button
             onClick={() => navigate('/ofertas')}
@@ -78,7 +75,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="anim-in grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1fr)_250px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1fr)_250px]">
         <div className="card-bengala min-w-0 overflow-hidden">
           <div className="flex min-w-0 items-center justify-between gap-3 border-b border-ink-soft/10 px-4 py-3.5 sm:px-5">
             <h2 className="accent min-w-0 truncate text-sm font-bold text-ink sm:text-base">Produtos próximos ao vencimento</h2>
@@ -117,7 +114,7 @@ export default function Dashboard() {
           <div className="divide-y divide-ink-soft/10 px-4">
             {[
               ['CalendarClock', 'Vencendo em 7 dias', stats.vencendo7, '#d9641f'],
-              ['ListChecks', 'Na fila do jornal', fila.length, '#e4232e'],
+              ['ListChecks', 'Na fila do jornal', fila.length, '#d81e29'],
               ['Tag', 'Ofertas ativas', stats.ofertasAtivas, '#2e9e6b'],
             ].map(([icone, label, valor, cor]) => (
               <div key={label} className="flex items-center gap-3 py-3">

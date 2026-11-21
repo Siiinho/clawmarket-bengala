@@ -96,7 +96,7 @@ export function SeloDesconto({ texto, size = 44, className = '', style }) {
 }
 
 // ---- pílula genérica ----
-export function Pill({ children, cor = '#6b5a54', bg = '#f3ead9', className = '' }) {
+export function Pill({ children, cor = '#566274', bg = '#e8edf3', className = '' }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${className}`}
@@ -114,7 +114,7 @@ export function EmptyState({ icon = 'Inbox', titulo, descricao, acao }) {
       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-cream-200 text-ink-soft">
         <Icon name={icon} size={26} />
       </div>
-      <p className="font-medium text-ink">{titulo}</p>
+      <p className="font-semibold text-ink">{titulo}</p>
       {descricao && <p className="max-w-xs text-sm text-ink-soft">{descricao}</p>}
       {acao && <div className="mt-2">{acao}</div>}
     </div>
@@ -124,7 +124,7 @@ export function EmptyState({ icon = 'Inbox', titulo, descricao, acao }) {
 // ---- botão padrão ----
 export function Botao({ children, variante = 'primario', className = '', ...props }) {
   const base =
-    'inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition hover:-translate-y-[1px] hover:shadow-md active:translate-y-0 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none disabled:active:scale-100'
+    'inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50'
   const v = {
     primario: 'bg-bengala text-cream hover:bg-bengala-dark',
     coral: 'bg-coral text-white hover:bg-coral-dark',
@@ -151,13 +151,13 @@ export function Modal({ open, onClose, titulo, children, footer, largura = 'max-
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
+      className="overlay-in fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
       onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}
     >
-      <div className={`w-full ${largura} max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl`}>
+      <div role="dialog" aria-modal="true" aria-label={titulo} className={`modal-in w-full ${largura} max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl`}>
         <div className="flex items-center justify-between border-b border-ink-soft/10 px-5 py-3.5">
-          <h3 className="text-base font-medium">{titulo}</h3>
-          <button onClick={onClose} className="rounded-lg p-1 text-ink-soft hover:bg-cream-200">
+          <h3 className="text-base font-semibold">{titulo}</h3>
+          <button onClick={onClose} aria-label="Fechar" className="rounded-lg p-1.5 text-ink-soft hover:bg-cream-200">
             <Lucide.X size={18} />
           </button>
         </div>
@@ -176,14 +176,13 @@ export function Toasts() {
   const cor = { sucesso: '#2e9e6b', erro: '#c42b2b', info: '#2e6fb0' }
   const ic = { sucesso: 'CheckCircle2', erro: 'AlertCircle', info: 'Info' }
   return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col gap-2">
+    <div aria-live="polite" className="fixed inset-x-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-[60] flex flex-col items-center gap-2 md:inset-x-auto md:bottom-5 md:right-5 md:items-end">
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="toast-in flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-medium shadow-lg"
-          style={{ borderLeft: `4px solid ${cor[t.tipo]}` }}
+          className="toast-in flex max-w-sm items-center gap-2.5 rounded-xl border border-navy/10 bg-white px-4 py-3 text-sm font-medium text-ink shadow-[0_8px_28px_rgba(8,43,79,.16)]"
         >
-          <Icon name={ic[t.tipo]} size={18} style={{ color: cor[t.tipo] }} />
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full" style={{ background: `${cor[t.tipo]}1f`, color: cor[t.tipo] }}><Icon name={ic[t.tipo]} size={15} /></span>
           {t.msg}
         </div>
       ))}

@@ -458,7 +458,7 @@ export default function Jornal() {
                   <Icon name={bloqueiosPDF.length ? 'TriangleAlert' : problemasPDF.length ? 'Info' : 'BadgeCheck'} size={17} className={bloqueiosPDF.length ? 'text-critical' : problemasPDF.length ? 'text-warning' : 'text-success'} />
                   <span className="flex-1">Revisão antes do PDF</span>
                   <span className="text-xs font-medium text-ink-soft">
-                    {bloqueiosPDF.length ? `${bloqueiosPDF.length} bloqueio(s)` : problemasPDF.length ? `${problemasPDF.length} aviso(s), impressão liberada` : 'Tudo pronto'}
+                    {bloqueiosPDF.length ? `${bloqueiosPDF.length === 1 ? '1 bloqueio' : `${bloqueiosPDF.length} bloqueios`}` : problemasPDF.length ? `${problemasPDF.length === 1 ? '1 aviso' : `${problemasPDF.length} avisos`}, impressão liberada` : 'Tudo pronto'}
                   </span>
                   <Icon name={mostrarRevisao ? 'ChevronUp' : 'ChevronDown'} size={15} />
                 </button>
